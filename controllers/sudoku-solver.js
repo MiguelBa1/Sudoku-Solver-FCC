@@ -44,12 +44,23 @@ class SudokuSolver {
     let box_x = Math.trunc(column/3)
     let box_y = Math.trunc(row/3)
 
-    for (let i = box_y * 3; i < box_y * 3 + 3; i++) {
-      for (let j = box_x * 3; j < box_x * 3 + 3; j++) {
-        if (puzzleArray[i][j] == value && i != row && j != column) {
-          return false
+    if (puzzleArray[row][column] == 0) {
+      for (let i = box_y * 3; i < box_y * 3 + 3; i++) {
+        for (let j = box_x * 3; j < box_x * 3 + 3; j++) {
+          if (puzzleArray[i][j] == value) {
+            return false
+          }
         }
       }
+    } else {
+      for (let i = box_y * 3; i < box_y * 3 + 3; i++) {
+        for (let j = box_x * 3; j < box_x * 3 + 3; j++) {
+          if (puzzleArray[i][j] == value && i != row && j != column) {
+            return false
+          }
+        }
+      }
+
     }
     return true
   }
@@ -68,7 +79,7 @@ class SudokuSolver {
   solve(puzzleString) {
     let puzzleArray = this.formatPuzzle(puzzleString)
     this.fillSudoku(puzzleArray)
-    return puzzleArray.flat().join('')
+    return puzzleArray.flat().join('').replace(/0/g, '.')
   }
 
   fillSudoku(puzzleArray) {
@@ -100,4 +111,8 @@ class SudokuSolver {
     return false
   }
 }
+// let solver = new SudokuSolver()
+// let arr = solver.formatPuzzle("1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.")
+// console.log(solver.checkRowPlacement(arr, 1, 1, 6))
+// console.log(solver.solve("..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.."))
 module.exports = SudokuSolver;
